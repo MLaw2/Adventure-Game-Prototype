@@ -1,3 +1,12 @@
+class Tutorial extends AdventureScene {
+    constructor(){
+        super("Tutorial", "Entrance to Candy Kingdom");
+    }
+
+    onEnter(){
+        ;
+    }
+}
 class Demo1 extends AdventureScene {
     constructor() {
         super("demo1", "First Room");
@@ -97,8 +106,10 @@ class Intro extends Phaser.Scene {
         super('intro')
     }
     create() {
-        this.add.text(50,50, "Adventure awaits!").setFontSize(50);
-        this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
+        let introX = 960;
+        let introY = 540;
+        this.add.text(introX,introY, "A world of candy awaits!").setFontSize(50).setOrigin(0.5, 0.5);
+        this.add.text(introX,introY + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             this.time.delayedCall(1000, () => this.scene.start('demo1'));
