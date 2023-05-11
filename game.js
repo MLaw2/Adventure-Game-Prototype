@@ -4,7 +4,18 @@ class Tutorial extends AdventureScene {
     }
 
     onEnter(){
-        ;
+        let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
+        testing.on('pointerdown', () => {
+            this.showMessage("THE IMPOSTOR IS SUS");
+            this.tweens.add({
+                targets: testing,
+                x: '+=' + this.s,
+                repeat: 100,
+                yoyo: true,
+                ease: "Sine.inOut",
+                duration: 10
+            })
+        })
     }
 }
 class Demo1 extends AdventureScene {
@@ -106,12 +117,11 @@ class Intro extends Phaser.Scene {
         super('intro')
     }
     create() {
-        let introX = 960;
-        let introY = 540;
-        this.add.text(introX,introY, "A world of candy awaits!").setFontSize(50).setOrigin(0.5, 0.5);
-        this.add.text(introX,introY + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
+        this.add.text(this.game.config.width/2,this.game.config.height/2, "A world of candy awaits!").setFontSize(50).setOrigin(0.5, 0.5);
+        this.add.text(this.game.config.width/2,this.game.config.height/2 + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
+            // this.time.delayedCall(1000, () => this.scene.start('Tutorial'));
             this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
@@ -136,7 +146,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Intro, Tutorial, Demo1, Demo2, Outro],
     title: "Adventure Game",
 });
 

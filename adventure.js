@@ -53,6 +53,14 @@ class AdventureScene extends Phaser.Scene {
 
     }
 
+    makeItem(name, description, x, y){
+        let item = this.add.text(this.w * x, this.h * y, name)
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage(description));
+        return item;
+    }
+
     showMessage(message) {
         this.messageBox.setText(message);
         this.tweens.add({
