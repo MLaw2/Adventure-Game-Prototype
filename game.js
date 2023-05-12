@@ -1,18 +1,33 @@
 class Tutorial extends AdventureScene {
     constructor(){
-        super("tutorial", "Entrance to Candy Kingdom");
+        super("tutorial", "Entrance to the Candy Kingdom");
     }
 
     onEnter(){
-        let door = this.makeItem("🚪", "A door. You can smell greatness on the other side.", 0.5, 0.4, 20);
+        let candy = this.makeItem("🍬", 0.5, 0.7, 2);
+        candy.on("pointerover", () =>{
+            this.showMessage("A piece of candy");
+        })
+        candy.on('pointerdown', () =>{
+            this.showMessage("You picked up the piece of candy.");
+            this.addPickupTween(candy);
+            this.gainItem("candy");
+        })
+
+        let door = this.makeItem("🚪", 0.5, 0.4, 20);
+        door.on('pointerover', () =>{
+            if(this.hasItem("candy")){
+                this.showMessage("The way is open.");
+                console.log("yep balls");
+            }
+            else{
+                this.showMessage("A door. You can smell greatness on the other side.");
+                console.log("nope not balls");
+            }
+        })
         door.on('pointerdown', () =>{
             this.showMessage("An offering is required.");
             this.addShake(door, 0.5, 2, 100);
-        })
-        let candy = this.makeItem("🍬", "A piece of candy.", 0.5, 0.7, 2);
-        candy.on('pointerdown', () =>{
-            this.showMessage("You picked up the piece of candy.");
-            this.addItem
         })
         // let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
         // testing.on('pointerdown', () => {
@@ -207,7 +222,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    // scene: [Intro, Tutorial, Demo1, Demo2, Outro],
+    // scene: [Intro, Demo1, Demo2, Outro],
     scene: [Intro, Tutorial, Entrance, Troll, Toll, Castle, Witch, Mage, InnerSanctum, TheEnd],
     title: "Sweet Dreams",
 });

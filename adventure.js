@@ -24,7 +24,7 @@ class AdventureScene extends Phaser.Scene {
             .setText(this.name)
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
-        
+
         this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
@@ -53,7 +53,7 @@ class AdventureScene extends Phaser.Scene {
 
     }
 
-    makeItem(name, description, x, y, s){
+    makeItem(name, x, y, s){
         let scale = 2;
         if(s > 0){
             scale = s;
@@ -62,7 +62,6 @@ class AdventureScene extends Phaser.Scene {
             .setFontSize(this.s * scale)
             .setOrigin(0.5, 0.5)
             .setInteractive()
-            .on('pointerover', () => this.showMessage(description));
         return item;
     }
 
@@ -74,6 +73,16 @@ class AdventureScene extends Phaser.Scene {
             yoyo: true,
             ease: "Sine.inOut",
             duration: duration,
+        });
+    }
+
+    addPickupTween(item){
+        this.tweens.add({
+            targets: item,
+            y: `-=${2 * this.s}`,
+            alpha: { from: 1, to: 0 },
+            duration: 500,
+            onComplete: () => item.destroy()
         });
     }
 
