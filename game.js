@@ -26,8 +26,15 @@ class Tutorial extends AdventureScene {
             }
         })
         door.on('pointerdown', () =>{
-            this.showMessage("An offering is required.");
-            this.addShake(door, 0.5, 2, 100);
+            if(this.hasItem("candy")){
+                this.showMessage("");
+                this.loseItem("candy");
+                this.gotoScene("entrance");
+            }
+            else{
+                this.showMessage("An offering is required.");
+                this.addShake(door, 0.5, 2, 100);
+            }
         })
         // let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
         // testing.on('pointerdown', () => {
