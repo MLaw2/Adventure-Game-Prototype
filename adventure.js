@@ -53,12 +53,28 @@ class AdventureScene extends Phaser.Scene {
 
     }
 
-    makeItem(name, description, x, y){
-        let item = this.add.text(this.w * x, this.h * y, name)
-            .setFontSize(this.s * 2)
+    makeItem(name, description, x, y, s){
+        let scale = 2;
+        if(s > 0){
+            scale = s;
+        }
+        let item = this.add.text((this.w*0.75) * x, this.h * y, name)
+            .setFontSize(this.s * scale)
+            .setOrigin(0.5, 0.5)
             .setInteractive()
             .on('pointerover', () => this.showMessage(description));
         return item;
+    }
+
+    addShake(item, strength, amount, duration){
+        this.tweens.add({
+            targets: item,
+            x: '+=' + this.s * strength,
+            repeat: amount,
+            yoyo: true,
+            ease: "Sine.inOut",
+            duration: duration,
+        });
     }
 
     showMessage(message) {
