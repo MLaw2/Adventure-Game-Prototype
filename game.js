@@ -1,22 +1,83 @@
 class Tutorial extends AdventureScene {
     constructor(){
-        super("Tutorial", "Entrance to Candy Kingdom");
+        super("tutorial", "Entrance to Candy Kingdom");
     }
 
     onEnter(){
-        let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
-        testing.on('pointerdown', () => {
-            this.showMessage("THE IMPOSTOR IS SUS");
-            this.tweens.add({
-                targets: testing,
-                x: '+=' + this.s,
-                repeat: 100,
-                yoyo: true,
-                ease: "Sine.inOut",
-                duration: 10
-            })
+        let door = this.makeItem("🚪", "A door. You can smell greatness on the other side.", 0.5, 0.4, 20);
+        door.on('pointerdown', () =>{
+            this.showMessage("An offering is required.");
+            this.addShake(door, 0.5, 2, 100);
         })
+        let candy = this.makeItem("🍬", "A piece of candy.", 0.5, 0.7, 2);
+        candy.on('pointerdown', () =>{
+            this.showMessage("You picked up the piece of candy.");
+            this.addItem
+        })
+        // let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
+        // testing.on('pointerdown', () => {
+        //     this.showMessage("THE IMPOSTOR IS SUS 😊🖇");
+        //     this.tweens.add({
+        //         targets: testing,
+        //         x: '+=' + this.s * 0.5,
+        //         repeat: 100,
+        //         yoyo: true,
+        //         ease: "Sine.inOut",
+        //         duration: 10
+        //     })
+        // })
     }
+}
+
+class Entrance extends AdventureScene {
+    constructor(){
+        super("entrance", "Welcome to Candy Kingdom!");
+    }
+    onEnter(){
+
+    }
+}
+class Troll extends AdventureScene {
+    constructor(){
+        super("troll", "A Troll blocks the way!");
+    }
+    onEnter(){}
+}
+class Toll extends AdventureScene {
+    constructor(){
+        super("toll", "A Candy Salesman blocks the way!");
+    }
+    onEnter(){}
+}
+class Castle extends AdventureScene {
+    constructor(){
+        super("castle", "Mysterious sweets line the wall...");
+    }
+    onEnter(){}
+}
+class Witch extends AdventureScene {
+    constructor(){
+        super("witch", "The air is sweet with creation");
+    }
+    onEnter(){}
+}
+class Mage extends AdventureScene {
+    constructor(){
+        super("mage", "The air crackles with pure sugar");
+    }
+    onEnter(){}
+}
+class InnerSanctum extends AdventureScene {
+    constructor(){
+        super("innersanctum", "Sickly sweetness blocks your path!");
+    }
+    onEnter(){}
+}
+class TheEnd extends AdventureScene {
+    constructor(){
+        super("theend", "the end is never the end is never the end isn ever the end is never the end is never the end is never the end is never the end is never the end is never the end is never the end");
+    }
+    onEnter(){}
 }
 class Demo1 extends AdventureScene {
     constructor() {
@@ -121,8 +182,8 @@ class Intro extends Phaser.Scene {
         this.add.text(this.game.config.width/2,this.game.config.height/2 + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            // this.time.delayedCall(1000, () => this.scene.start('Tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('tutorial'));
+            // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
 }
@@ -146,7 +207,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Tutorial, Demo1, Demo2, Outro],
-    title: "Adventure Game",
+    // scene: [Intro, Tutorial, Demo1, Demo2, Outro],
+    scene: [Intro, Tutorial, Entrance, Troll, Toll, Castle, Witch, Mage, InnerSanctum, TheEnd],
+    title: "Sweet Dreams",
 });
 
