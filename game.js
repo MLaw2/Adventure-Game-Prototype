@@ -36,18 +36,6 @@ class Tutorial extends AdventureScene {
                 this.addShake(door, 0.5, 2, 100);
             }
         })
-        // let testing = this.makeItem("testing L", "what the dog doin", 0.5, 0.5);
-        // testing.on('pointerdown', () => {
-        //     this.showMessage("THE IMPOSTOR IS SUS 😊🖇");
-        //     this.tweens.add({
-        //         targets: testing,
-        //         x: '+=' + this.s * 0.5,
-        //         repeat: 100,
-        //         yoyo: true,
-        //         ease: "Sine.inOut",
-        //         duration: 10
-        //     })
-        // })
     }
 }
 
@@ -56,14 +44,30 @@ class Entrance extends AdventureScene {
         super("entrance", "Welcome to Candy Kingdom!");
     }
     onEnter(){
-
+        this.cameras.main.setBackgroundColor(0xff4dcf);
+        let secretEntrance = this.makeItem("🕳", 0.2, 0.3, 5);
+        secretEntrance.on("pointerover", ()=>{
+            this.showMessage("A secret entrance to the castle. You can smell the sour from here.");
+        });
+        secretEntrance.on("pointerdown", ()=>{
+            this.gotoScene("troll");
+        });
+        let bridge = this.makeItem("🌉", 0.7, 0.4, 5);
+        bridge.on("pointerover", ()=>{
+            this.showMessage("A bridge to the castle. You hear music.");
+        });
+        bridge.on("pointerdown", ()=>{
+            this.gotoScene("toll");
+        });
     }
 }
 class Troll extends AdventureScene {
     constructor(){
         super("troll", "A Troll blocks the way!");
     }
-    onEnter(){}
+    onEnter(){
+        // this.cameras.main.setBackgroundColor(0x)
+    }
 }
 class Toll extends AdventureScene {
     constructor(){
@@ -204,7 +208,8 @@ class Intro extends Phaser.Scene {
         this.add.text(this.game.config.width/2,this.game.config.height/2 + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('tutorial'));
+            // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
+            this.time.delayedCall(1000, () => this.scene.start('entrance'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
