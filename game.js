@@ -192,9 +192,11 @@ class Castle extends AdventureScene {
         })
     }
 }
+
+// missing no item cauldron message. for polish.
 class Witch extends AdventureScene {
     constructor(){
-        super("witch", "The air is sweet with creation");
+        super("witch", "The air is sweet with creation...");
     }
     preload(){
         this.load.image("cauldron", "./assets/cauldron.png");
@@ -252,11 +254,42 @@ class Witch extends AdventureScene {
 }
 class Mage extends AdventureScene {
     constructor(){
-        super("mage", "The air crackles with pure sugar");
+        super("mage", "The air crackles with pure sugar...");
     }
     onEnter(){
+        //DELETE
+        this.gainItem("chocolate bar");
         this.cameras.main.setBackgroundColor(0x072A6C);
+        // mage
         let mage = this.makeItem("🧙‍♂️", 0.5, 0.4, 10);
+        mage.on("pointerover",()=>{
+            this.showMessage("A mage. He is engrossed in a spell.");
+        });
+        mage.on("pointerdown",()=>{
+            if(this.hasItem("lightning key")){
+                this.showMessage("Thank you for the help.");
+            }
+            else{
+                this.showMessage("I am making the sweetest spell. However, the spell is too sweet, and I need something strong to keep it stable. Help me, and I will make it worth your while.");
+            }
+        });
+        // spell
+        let spell = this.makeItem("🔮", 0.5, 0.6, 7);
+        spell.on("pointerover",()=>{
+            this.showMessage("A sweet spell.");
+        });
+        spell.on("pointerdown",()=>{
+            if(this.hasItem("chocolate bar")){
+                //success
+                this.loseItem("chocolate bar");
+                this.showMessage("It worked! The spell is stable! Here is your reward.");
+                this.gainItem("lightning key");
+            }
+            else if(!this.hasItem("lightning key")){
+                this.showMessage("It's unstable still. Try adding something else.");
+                this.addShake(spell, 0.5, 2, 100);
+            }
+        });
 
         // back button
         let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
@@ -384,7 +417,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('witch'));
+            this.time.delayedCall(1000, () => this.scene.start('mage'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
