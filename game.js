@@ -158,7 +158,7 @@ class Toll extends AdventureScene {
         // candy salesman
         let salesman = this.makeItem("🤹‍♂️", 0.5, 0.4, 10);
         salesman.on("pointerover",()=>{
-            this.showMessage("Hello, would you like to enter the castle? I'll let you in, but you must answer a riddle first: If all of my candies had to go somewhere, which one would be the last to arrive?");
+            this.showMessage("Hello there! I'll let you in the castle, but you must answer a riddle first: If all of my candies had to go somewhere, which one would be last?");
         });
         salesman.on("pointerdown",()=>{
             if(this.hasItem("chocolate bar")){
@@ -171,6 +171,9 @@ class Toll extends AdventureScene {
                 .on("pointerdown",()=>{
                     this.gotoScene("castle");
                 });
+            }
+            else{
+                this.showMessage("Incorrect!");
             }
         });
         // candy cart
