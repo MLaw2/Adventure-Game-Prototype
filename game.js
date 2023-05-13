@@ -307,7 +307,10 @@ class Witch extends AdventureScene {
             this.showMessage("You smell a mysterious concoction. Is this really a fondue? At least it smells nice...");
         })
         cauldron.on("pointerdown",()=>{
-            if(this.hasItem("dango")){
+            if(this.hasItem("spiral key")){
+                this.showMessage("You taste the fondue. Words cannot describe the assault on your taste buds. In a good way.");
+            }
+            else if(this.hasItem("dango")){
                 this.loseItem("dango");
                 witch_quest_complete = true;
                 this.tweens.add({
