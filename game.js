@@ -196,15 +196,77 @@ class Witch extends AdventureScene {
     constructor(){
         super("witch", "The air is sweet with creation");
     }
+    preload(){
+        this.load.image("cauldron", "./assets/cauldron.png");
+    }
     onEnter(){
         this.cameras.main.setBackgroundColor(0x301934);
+        // key to use as an item and as a conditional
+        // this.makeItem("spiral key", 0, -0.5, 1);
+
+        // witch
+        let witch = this.makeItem("️🧙‍♀️", 0.5, 0.4, 10);
+        witch.on("pointerover",()=>{
+            if(this.hasItem("spiral key")){
+                this.showMessage("Thank you for your help.");
+            }
+            else{
+                this.showMessage("You there. You must be looking for the secrets of this castle. But I am missing something for my fondue. I need something exotic!");
+            }
+        })
+        let witch_quest_complete = false;
+        // cauldron
+        let cauldron = this.add.image(this.w * 0.75 * 0.75, this.h * 0.7, "cauldron")
+            .setInteractive()
+            .setScale(0.1);
+        cauldron.on("pointerover",()=>{
+            this.showMessage("You smell a mysterious concoction. Is this really a fondue? At least it smells nice...");
+        })
+        cauldron.on("pointerdown",()=>{
+            if(this.hasItem("dango")){
+                this.loseItem("dango");
+                witch_quest_complete = true;
+                this.tweens.add({
+                    targets: cauldron,
+                    angle: '+=360',
+                    duration: 500,
+                })
+                this.showMessage("Ah, this will be perfect! Here is a key for your troubles.");
+                this.gainItem("spiral key");
+            }
+            else{
+                // needs a special message for when you have nothing. otherwise it's a bit weird, but ok for now
+                this.showMessage("That won't work! This fondue needs to be special!");
+                this.addShake(cauldron, 0.5, 2, 100);
+            }
+        })
+        // back button
+        let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
+        backButton.on("pointerover",()=>{
+            this.showMessage("Click to go back.");
+        })
+        backButton.on("pointerdown",()=>{
+            this.gotoScene("castle");
+        })
     }
 }
 class Mage extends AdventureScene {
     constructor(){
         super("mage", "The air crackles with pure sugar");
     }
-    onEnter(){}
+    onEnter(){
+        this.cameras.main.setBackgroundColor(0x072A6C);
+        let mage = this.makeItem("🧙‍♂️", 0.5, 0.4, 10);
+
+        // back button
+        let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
+        backButton.on("pointerover",()=>{
+            this.showMessage("Click to go back.");
+        })
+        backButton.on("pointerdown",()=>{
+            this.gotoScene("castle");
+        })
+    }
 }
 class InnerSanctum extends AdventureScene {
     constructor(){
@@ -322,7 +384,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('castle'));
+            this.time.delayedCall(1000, () => this.scene.start('witch'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
