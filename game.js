@@ -143,13 +143,62 @@ class Castle extends AdventureScene {
     constructor(){
         super("castle", "Mysterious sweets line the wall...");
     }
-    onEnter(){}
+    onEnter(){
+        this.cameras.main.setBackgroundColor(0x7F00FF);
+        // big door
+        let finalDoor = this.makeItem("🚪", 0.5, 0.5, 20);
+        finalDoor.on("pointerover",()=>{
+            if(this.hasItem("spiral key") && this.hasItem("lightning key")){
+                this.showMessage("The door can be opened.");
+            }
+            else if(this.hasItem("spiral key") || this.hasItem("lightning key")){
+                this.showMessage("You are missing a key.");
+            }
+            else{
+                this.showMessage("The door has two keyholes. You can smell pure sweetness on the other side.");
+            }
+        })
+        finalDoor.on("pointerdown",()=>{
+            if(this.hasItem("spiral key") && this.hasItem("lightning key")){
+                // enter final room
+            }
+            else{
+                this.addShake(door, 0.5, 2, 100);
+            }
+        })
+        // witch door
+        let witchDoor = this.makeItem("🚪", 0.25, 0.7, 7);
+        witchDoor.on("pointerover",()=>{
+            this.showMessage("A door. You can smell something brewing on the other side.");
+        });
+        witchDoor.on("pointerdown",()=>{
+            this.gotoScene("witch");
+        })
+        // mage door
+        let mageDoor = this.makeItem("🚪", 0.75, 0.7, 7);
+        mageDoor.on("pointerover",()=>{
+            this.showMessage("A door. You hear sweet magic happening on the other side.");
+        })
+        mageDoor.on("pointerdown",()=>{
+            this.gotoScene("mage");
+        })
+        // back button
+        let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
+        backButton.on("pointerover",()=>{
+            this.showMessage("Click to go back.");
+        })
+        backButton.on("pointerdown",()=>{
+            this.gotoScene("entrance");
+        })
+    }
 }
 class Witch extends AdventureScene {
     constructor(){
         super("witch", "The air is sweet with creation");
     }
-    onEnter(){}
+    onEnter(){
+        this.cameras.main.setBackgroundColor(0x301934);
+    }
 }
 class Mage extends AdventureScene {
     constructor(){
@@ -273,7 +322,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('troll'));
+            this.time.delayedCall(1000, () => this.scene.start('castle'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
