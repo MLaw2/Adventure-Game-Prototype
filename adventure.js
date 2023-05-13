@@ -62,6 +62,7 @@ class AdventureScene extends Phaser.Scene {
             .setFontSize(this.s * scale)
             .setOrigin(0.5, 0.5)
             .setInteractive()
+            .setPadding(30)
         return item;
     }
 
