@@ -18,11 +18,9 @@ class Tutorial extends AdventureScene {
         door.on('pointerover', () =>{
             if(this.hasItem("candy")){
                 this.showMessage("The way is open.");
-                console.log("yep balls");
             }
             else{
                 this.showMessage("A door. You can smell greatness on the other side.");
-                console.log("nope not balls");
             }
         })
         door.on('pointerdown', () =>{
@@ -65,17 +63,79 @@ class Troll extends AdventureScene {
     constructor(){
         super("troll", "A Troll blocks the way!");
     }
+    preload(){
+        this.load.image("sourtroll", "./assets/troll.png");
+    }
     onEnter(){
         this.cameras.main.setBackgroundColor(0xD0FE1D);
-        ;
+        // passageway
+        this.makeItem("🚪", 0.5, 0.5, 10)
+            .on("pointerover",()=>{
+                this.showMessage("The castle path is open.");
+            })
+            .on("pointerdown",()=>{
+                this.showMessage("The passageway opens.");
+                this.gotoScene("castle");
+            });
+        // troll initialize
+        let troll = this.add.image(this.w * 0.75 * 0.5, this.h * 0.5, "sourtroll")
+            .setInteractive();
+        // cup
+        let cup = this.makeItem("🥤", 0.7, 0.8, 5);
+        cup.on("pointerover",()=>{
+            this.showMessage("An empty cup.");
+        })
+        cup.on("pointerdown",()=>{
+            this.showMessage("You picked up the cup.");
+            this.addPickupTween(cup);
+            this.gainItem("cup");
+        })
+        // river
+        let river = this.makeItem("🌊", 0.2, 0.8, 10);
+        river.on("pointerover",()=>{
+            this.showMessage("A nearby river. It smells of sour.");
+        });
+        river.on("pointerdown", ()=> {
+            if(this.hasItem("cup")){
+                this.showMessage("You filled the cup with the sour river.");
+                this.loseItem("cup");
+                this.gainItem("sour drink");
+            }
+        });
+
+        // troll interactions
+        let satiated = false;
+        troll.on("pointerover", ()=>{
+            if(satiated == true){
+                this.showMessage("A happy troll.");
+            }
+            else{
+                this.showMessage("Need...food...");
+            }
+        });
+        troll.on("pointerdown", ()=>{
+            if(satiated){
+                this.showMessage("Thank you.");
+            }
+            else if(this.hasItem("sour drink")){
+                this.showMessage("MMMMMMMM, I needed that. Thank you kind stranger, you may proceed.");
+                this.loseItem("sour drink");
+                satiated = true;
+                this.tweens.add({
+                    targets: troll,
+                    x: (this.w * 0.75) * 0.8,
+                    duration: 1000,
+                })
+            }
+            else{
+                this.showMessage("Not...Sour...Enough...");
+            }
+        });
     }
 }
 class Toll extends AdventureScene {
     constructor(){
         super("toll", "A Candy Salesman blocks the way!");
-    }
-    preload(){
-        this.
     }
     onEnter(){}
 }
