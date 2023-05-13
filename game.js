@@ -68,6 +68,14 @@ class Troll extends AdventureScene {
     }
     onEnter(){
         this.cameras.main.setBackgroundColor(0xD0FE1D);
+        // back button
+        let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
+        backButton.on("pointerover",()=>{
+            this.showMessage("Click to go back.");
+        })
+        backButton.on("pointerdown",()=>{
+            this.gotoScene("entrance");
+        })
         // passageway
         this.makeItem("🚪", 0.5, 0.5, 10)
             .on("pointerover",()=>{
@@ -137,7 +145,81 @@ class Toll extends AdventureScene {
     constructor(){
         super("toll", "A Candy Salesman blocks the way!");
     }
-    onEnter(){}
+    onEnter(){
+        this.cameras.main.setBackgroundColor(0xffbcd9);
+        // back button
+        let backButton = this.makeItem("⬇", 0.5, 0.9, 3);
+        backButton.on("pointerover",()=>{
+            this.showMessage("Click to go back.");
+        })
+        backButton.on("pointerdown",()=>{
+            this.gotoScene("entrance");
+        })
+        // candy salesman
+        let salesman = this.makeItem("🤹‍♂️", 0.5, 0.4, 10);
+        salesman.on("pointerover",()=>{
+            this.showMessage("Hello, would you like to enter the castle? I'll let you in, but you must answer a riddle first: If all of my candies had to go somewhere, which one would be the last to arrive?");
+        });
+        salesman.on("pointerdown",()=>{
+            if(this.hasItem("chocolate bar")){
+                this.showMessage("Chocolate! Because it's always choco-late! Get it? You can go inside now. Feel free to take some candy with you.")
+                this.loseItem("chocolate bar");
+                this.makeItem("🚪", 0.3, 0.2, 4)
+                .on("pointerover",()=>{
+                    this.showMessage("The entrance to the castle.");
+                })
+                .on("pointerdown",()=>{
+                    this.gotoScene("castle");
+                });
+            }
+        });
+        // candy cart
+        let cartX = 0.2;
+        let cartY = 0.6;
+        let cartItemSize = 2
+        let icecream = this.makeItem("🍦", cartX, cartY, cartItemSize);
+        icecream.on("pointerover",()=>{
+            this.showMessage("Ice Cream");
+        });
+        icecream.on("pointerdown",()=>{
+            this.gainItem("ice cream");
+        });
+        let honey = this.makeItem("🍯", cartX + 0.1, cartY, cartItemSize);
+        honey.on("pointerover",()=>{
+            this.showMessage("Honey");
+        });
+        honey.on("pointerdown",()=>{
+            this.gainItem("honey");
+        });
+        let lollipop = this.makeItem("🍭", cartX + 0.2, cartY, cartItemSize);
+        lollipop.on("pointerover",()=>{
+            this.showMessage("A Lollipop");
+        });
+        lollipop.on("pointerdown",()=>{
+            this.gainItem("lollipop");
+        });
+        let chocolatebar = this.makeItem("🍫", cartX + 0.3, cartY, cartItemSize);
+        chocolatebar.on("pointerover",()=>{
+            this.showMessage("A Chocolate Bar");
+        });
+        chocolatebar.on("pointerdown",()=>{
+            this.gainItem("chocolate bar");
+        });
+        let dango = this.makeItem("🍡", cartX + 0.4, cartY, cartItemSize);
+        dango.on("pointerover",()=>{
+            this.showMessage("Dango");
+        });
+        dango.on("pointerdown",()=>{
+            this.gainItem("dango");
+        });
+        let donut = this.makeItem("🍩", cartX + 0.5, cartY, cartItemSize);
+        donut.on("pointerover",()=>{
+            this.showMessage("A Donut");
+        });
+        donut.on("pointerdown",()=>{
+            this.gainItem("donut");
+        });
+    }
 }
 class Castle extends AdventureScene {
     constructor(){
@@ -417,7 +499,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('mage'));
+            this.time.delayedCall(1000, () => this.scene.start('toll'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
