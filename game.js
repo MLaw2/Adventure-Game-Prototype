@@ -66,12 +66,16 @@ class Troll extends AdventureScene {
         super("troll", "A Troll blocks the way!");
     }
     onEnter(){
-        // this.cameras.main.setBackgroundColor(0x)
+        this.cameras.main.setBackgroundColor(0xD0FE1D);
+        ;
     }
 }
 class Toll extends AdventureScene {
     constructor(){
         super("toll", "A Candy Salesman blocks the way!");
+    }
+    preload(){
+        this.
     }
     onEnter(){}
 }
@@ -209,7 +213,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('entrance'));
+            this.time.delayedCall(1000, () => this.scene.start('troll'));
             // this.time.delayedCall(1000, () => this.scene.start('demo1'));
         });
     }
