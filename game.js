@@ -242,7 +242,7 @@ class Castle extends AdventureScene {
         })
         finalDoor.on("pointerdown",()=>{
             if(this.hasItem("spiral key") && this.hasItem("lightning key")){
-                // enter final room
+                this.gotoScene("innersanctum");
             }
             else{
                 this.addShake(door, 0.5, 2, 100);
@@ -339,8 +339,6 @@ class Mage extends AdventureScene {
         super("mage", "The air crackles with pure sugar...");
     }
     onEnter(){
-        //DELETE
-        this.gainItem("chocolate bar");
         this.cameras.main.setBackgroundColor(0x072A6C);
         // mage
         let mage = this.makeItem("🧙‍♂️", 0.5, 0.4, 10);
@@ -387,108 +385,47 @@ class InnerSanctum extends AdventureScene {
     constructor(){
         super("innersanctum", "Sickly sweetness blocks your path!");
     }
-    onEnter(){}
-}
-class TheEnd extends AdventureScene {
-    constructor(){
-        super("theend", "the end is never the end is never the end isn ever the end is never the end is never the end is never the end is never the end is never the end is never the end is never the end");
+    // Code from Phaser Examples: Look up link and you'll find it
+    openCandyBox(){
+        const url = `https://candybox2.github.io/`;
+        const s = window.open(url, '_blank');
+        if (s && s.focus){
+            s.focus();
+        }
+        else if (!s){
+            window.location.href = url;
+        }
     }
-    onEnter(){}
-}
-class Demo1 extends AdventureScene {
-    constructor() {
-        super("demo1", "First Room");
-    }
-
-    onEnter() {
-
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Metal, bent."))
-            .on('pointerdown', () => {
-                this.showMessage("No touching!");
+    onEnter(){
+        this.gainItem("honey");
+        let candybox = this.makeItem("📦", 0.5, 0.5, 10);
+        candybox.on("pointerover",()=>{
+            this.showMessage("The mythical candy box. You cannot possibly imagine what is inside.");
+        });
+        candybox.on("pointerdown",()=>{
+            this.openCandyBox();
+            this.gotoScene("outro");
+        });
+        let sweetdemon = this.makeItem("🍮", 0.5, 0.5, 40);
+        sweetdemon.on("pointerover",()=>{
+            this.showMessage("This amorphous blob of concentrated sweetness keeps throwing sweets at you, expecting you to go away. There must be a way to distract it away from the box.");
+        });
+        sweetdemon.on("pointerdown",()=>{
+            if(this.hasItem("honey")){
+                this.loseItem("honey");
+                this.showMessage("What is that? I must have it for myself!");
                 this.tweens.add({
-                    targets: clip,
-                    x: '+=' + this.s,
-                    repeat: 2,
-                    yoyo: true,
-                    ease: 'Sine.inOut',
-                    duration: 100
+                    targets: sweetdemon,
+                    x: 3000,
+                    duration: 1000,
                 });
-            });
-
-        let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("It's a nice key.")
-            })
-            .on('pointerdown', () => {
-                this.showMessage("You pick up the key.");
-                this.gainItem('key');
-                this.tweens.add({
-                    targets: key,
-                    y: `-=${2 * this.s}`,
-                    alpha: { from: 1, to: 0 },
-                    duration: 500,
-                    onComplete: () => key.destroy()
-                });
-            })
-
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
-            })
-            .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
-                }
-            })
-
+            }
+            else{
+                this.showMessage("You think you can tempt me? No single candy is too sweet for me!");
+            }
+        });
     }
 }
-
-class Demo2 extends AdventureScene {
-    constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
-    }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('demo1');
-            });
-
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
-    }
-}
-
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
@@ -498,9 +435,8 @@ class Intro extends Phaser.Scene {
         this.add.text(this.game.config.width/2,this.game.config.height/2 + 50, "Click anywhere to start dreaming...").setFontSize(20).setOrigin(0.5, 0.5);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            // this.time.delayedCall(1000, () => this.scene.start('tutorial'));
-            this.time.delayedCall(1000, () => this.scene.start('toll'));
-            // this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('tutorial'));
+            // this.time.delayedCall(1000, () => this.scene.start('innersanctum'));
         });
     }
 }
@@ -510,7 +446,7 @@ class Outro extends Phaser.Scene {
         super('outro');
     }
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
+        this.add.text(50, 50, "the end is never the end is never the end is never the end").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
@@ -524,8 +460,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    // scene: [Intro, Demo1, Demo2, Outro],
-    scene: [Intro, Tutorial, Entrance, Troll, Toll, Castle, Witch, Mage, InnerSanctum, TheEnd],
+    scene: [Intro, Tutorial, Entrance, Troll, Toll, Castle, Witch, Mage, InnerSanctum, Outro],
     title: "Sweet Dreams",
 });
 
