@@ -43,14 +43,14 @@ class Entrance extends AdventureScene {
     }
     onEnter(){
         this.cameras.main.setBackgroundColor(0xff4dcf);
-        let secretEntrance = this.makeItem("🕳", 0.2, 0.3, 5);
+        let secretEntrance = this.makeItem("🕳", 0.2, 0.7, 15);
         secretEntrance.on("pointerover", ()=>{
             this.showMessage("A secret entrance to the castle. You can smell the sour from here.");
         });
         secretEntrance.on("pointerdown", ()=>{
             this.gotoScene("troll");
         });
-        let bridge = this.makeItem("🌉", 0.7, 0.4, 5);
+        let bridge = this.makeItem("🌉", 0.7, 0.4, 20);
         bridge.on("pointerover", ()=>{
             this.showMessage("A bridge to the castle. You hear music.");
         });
